@@ -13,39 +13,60 @@ function getChoice(x) {
     }
 }
 
-function playRound() {
+function playRound(userChoice) {
     let computerChoice = Math.floor(Math.random() * 3);
-    let userChoice = Number(prompt("Enter 0 for rock, 1 for paper, or 2 for scissors: "))
 
-    while (userChoice < 0 || userChoice > 2) {
-        userChoice = Number(prompt("Invalid choice. Enter 0 for rock, 1 for paper, or 2 for scissors: "))
-    }
-    console.log(`Computer chose ${getChoice(computerChoice)}, you chose ${getChoice(userChoice)}.`)
+    resultDisplay.textContent = `Computer chose ${getChoice(computerChoice)}, you chose ${getChoice(userChoice)}. `;
 
     if (computerChoice === userChoice) {
-        console.log("It's a tie!");
+        resultDisplay.textContent += "It's a tie!";
     } else if (
         (computerChoice === 0 && userChoice === 2) ||
         (computerChoice === 1 && userChoice === 0) ||
         (computerChoice === 2 && userChoice === 1)
     ) {
-        console.log("Computer wins this round!");
+        resultDisplay.textContent += "Computer wins this round!";
         computerScore++;
     } else {
-        console.log("You win this round!");
+        resultDisplay.textContent += "You win this round!";
         humanScore++;
+    }
+
+    humanScoreDisplay.textContent = humanScore;
+    computerScoreDisplay.textContent = computerScore;
+
+    if (humanScore === 5) {
+        finalResultDisplay.textContent = "Congrats! You win the game!";
+        resetButton.hidden = false;
+    }
+    if (computerScore === 5) {
+        finalResultDisplay.textContent = "Computer wins the game! Better luck next time!";
+        resetButton.hidden = false;
     }
 }
 
+const rockButton = document.getElementById("rock");
+const paperButton = document.getElementById("paper");
+const scissorsButton = document.getElementById("scissors");
+const resetButton = document.getElementById("reset");
 
-while (humanScore < 5 && computerScore < 5) {
-    playRound();
-    console.log(`Current Score - Human: ${humanScore}, Computer: ${computerScore}`);
-}
+const resultDisplay = document.getElementById("result");
+const finalResultDisplay = document.getElementById("finalResult");
+const humanScoreDisplay = document.getElementById("humanScore");
+const computerScoreDisplay = document.getElementById("computerScore");
 
-if (humanScore === 5) {
-    console.log("Congrats! You win the game!");
-} else {
-    console.log("Computer wins the game! Better luck next time!");
-}
+rockButton.addEventListener("click", () => playRound(0));
+paperButton.addEventListener("click", () => playRound(1));
+scissorsButton.addEventListener("click", () => playRound(2));
+
+resetButton.addEventListener("click", () => {
+    humanScore = 0;
+    computerScore = 0;
+    humanScoreDisplay.textContent = humanScore;
+    computerScoreDisplay.textContent = computerScore;
+    resultDisplay.textContent = "";
+    finalResultDisplay.textContent = "";
+    resetButton.hidden = true;
+});
+
   
